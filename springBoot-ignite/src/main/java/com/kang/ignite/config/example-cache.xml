@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="cacheConfiguration">
+            <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                <!-- Set a cache name. -->
+                <property name="name" value="cacheName"/>
+                <!-- Set cache mode. -->
+                <property name="cacheMode" value="PARTITIONED"/>
+                <!-- Other cache configurations. -->
+            </bean>
+        </property>
+    </bean>
+
+
+</beans>

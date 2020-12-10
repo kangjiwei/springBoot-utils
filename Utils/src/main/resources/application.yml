@@ -1,0 +1,11 @@
+spring:
+   freemarker:
+     charset: UTF-8
+     content-type: text/html
+     expose-request-attributes: true
+     expose-session-attributes: true
+     expose-spring-macro-helpers: true
+     suffix: .ftl
+     settings:
+       datatime_format: yyyy-MM-dd HH:mm:ss
+       default_encoding: UTF-8

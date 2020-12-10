@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <!-- In distributed environment, replace with actual host IP address. -->
+                                <value>192.168.20.29:47500..47509</value>
+                                <value>192.168.20.30:47500..47509</value>
+                                <value>192.168.20.31:47500..47509</value>
+                                <value>192.168.20.32:47500..47509</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+                <property name="localPort" value="47500"/>
+                <property name="localAddress" value="192.168.20.29"/>
+            </bean>
+        </property>
+
+        <property name="igniteInstanceName" value="democluster3"/>
+        <property name="peerClassLoadingEnabled" value="true"/>
+
+        <property name="communicationSpi">
+            <bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
+                <property name="localAddress" value="192.168.20.29"/>
+            </bean>
+        </property>
+
+        <!--网络超时时长 -->
+        <property name="networkTimeout" value="10000"/>
+    </bean>
+</beans>

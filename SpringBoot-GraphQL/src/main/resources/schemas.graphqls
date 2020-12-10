@@ -1,0 +1,46 @@
+schema{ # 查询，增加类型判断
+ query:Query
+ mutation:mutation
+}
+
+type mutation{
+   createBook(book:iBook): Book
+   updateBook(id:ID,book:iBook): Book!
+   deleteById(id:ID): Boolean
+   addUser(user:iUser): user
+}
+
+type Query {
+  bookById(id: ID): [Book]
+  queryStu(id:ID): [Student] #[]表示返回集合
+}
+
+type Book{
+ id:ID
+ bookName: String
+ pay: String
+}
+
+input iBook{
+ id: ID
+ bookName: String
+ pay: String
+}
+
+type Student{
+ id: ID
+ name: String
+ classes: String
+}
+
+type user{
+    name: ID
+    sex: String
+    Intro:String
+}
+
+input iUser{
+    name: ID
+    sex: String
+    Intro:String
+}

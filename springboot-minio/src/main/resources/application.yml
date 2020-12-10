@@ -1,0 +1,7 @@
+server:
+   port: 9001
+
+minio:
+  url: http://192.168.128.128:9000
+  access_key: minio
+  secret_key: minio123
