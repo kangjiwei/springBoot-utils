@@ -1,9 +1,8 @@
 package com.flink.source;
 
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
+import org.apache.flink.api.common.functions.*;
+import org.apache.flink.api.common.serialization.SerializationSchema;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
@@ -11,12 +10,20 @@ import org.apache.flink.streaming.api.collector.selector.OutputSelector;
 import org.apache.flink.streaming.api.datastream.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.CoFlatMapFunction;
+import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.functions.source.SourceFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.util.Collector;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -57,10 +64,10 @@ public class SourceTest_collections {
         dataStreamSource.print();
         env.execute();
     }
-    
+
 
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-    DataStreamSource<String> dataStreamSource = env.readTextFile("D:\\InitSoft\\Project\\springBoot-utils\\springboot-flink\\src\\main\\resources\\sensorReading.txt");
+    DataStreamSource<String> dataStreamSource = env.readTextFile("C:\\Users\\Admin\\Documents\\springBoot-utils\\springboot-flink\\src\\main\\resources\\sensorReading.txt");
     SingleOutputStreamOperator<SensorReading> map = dataStreamSource.map(new MapFunction<String, SensorReading>() {
         @Override
         public SensorReading map(String s) throws Exception {
@@ -71,6 +78,7 @@ public class SourceTest_collections {
 
     /**
      * 滚动计算,
+     *
      * @throws Exception
      */
     @Test
@@ -124,7 +132,7 @@ public class SourceTest_collections {
     }
 
     @Test
-    public void  execute_split() throws Exception {
+    public void execute_split() throws Exception {
         KeyedStream<SensorReading, String> keyedStream = map.keyBy(SensorReading::getId);
         SplitStream<SensorReading> split = keyedStream.split(new OutputSelector<SensorReading>() {
             @Override
@@ -160,11 +168,90 @@ public class SourceTest_collections {
             }
         });
         objectSingleOutputStreamOperator.print("connect");
-
-        select.union(height,low);
+        select.union(height, low);
 
         env.execute();
     }
 
+
+    @Test
+    public void execute_sink() throws Exception {
+        Properties properties = new Properties();
+        properties.setProperty("bootstrap.servers", "192.168.20.32:9092");
+        // only required for Kafka 0.8
+        properties.setProperty("zookeeper.connect", "192.168.20.32:2181");
+        properties.setProperty("group.id", "test");
+        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        //读取kafka数据
+        FlinkKafkaConsumer<String> producer = new FlinkKafkaConsumer<String>("test", new SimpleStringSchema(), properties);
+        DataStreamSource<String> streamSource = env.addSource(producer);
+        streamSource.addSink(new SinkFunction<String>() {
+            @Override
+            public void invoke(String value, Context context) throws Exception {
+                KafkaProducer producer = new KafkaProducer<String, String>(properties);
+                ProducerRecord<String, String> record = new ProducerRecord<>("sinktest", null, null, value);
+                producer.send(record);
+                producer.flush();
+            }
+        });
+        env.execute();
+    }
+
+
+    /**
+     * kafka写入数据
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void producer() throws InterruptedException {
+        int i = 111111;
+        while (true) {
+            Thread.sleep(1000);
+            execute_produce("走掉" + i ++);
+        }
+    }
+
+
+    public void execute_produce(String content) {
+        Properties prop = new Properties();
+        prop.setProperty("bootstrap.servers", "192.168.20.32:9092");
+        prop.setProperty("zookeeper.connect", "192.168.20.32:2181");
+        prop.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer"); //key 序列化
+        prop.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer"); //value 序列化
+        KafkaProducer producer = new KafkaProducer<String, String>(prop);
+        ProducerRecord<String, String> record = new ProducerRecord<>("sinktest", null, null, content);
+        producer.send(record);
+        producer.flush();
+    }
+
+    @Test
+    public void execute_window() {
+        map.keyBy("id")
+                .timeWindow(Time.seconds(100))
+                .aggregate(new AggregateFunction<SensorReading, Object, Integer>() {
+                    @Override
+                    public Object createAccumulator() {
+                        return null;
+                    }
+
+                    @Override
+                    public Object add(SensorReading sensorReading, Object o) {
+                        return null;
+                    }
+
+                    @Override
+                    public Integer getResult(Object o) {
+                        return null;
+                    }
+
+                    @Override
+                    public Object merge(Object o, Object acc1) {
+                        return null;
+                    }
+                });
+
+    }
 
 }
