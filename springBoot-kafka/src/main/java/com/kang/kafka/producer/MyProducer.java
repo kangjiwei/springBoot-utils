@@ -20,7 +20,7 @@ public class MyProducer {
     * */
     public static void main(String[] args) throws InterruptedException {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "192.168.0.104:9092");
+        props.put("bootstrap.servers", "192.168.20.32:9092");
         props.put("acks", "all");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
@@ -28,7 +28,7 @@ public class MyProducer {
         for (int i = 0; i < 100000; i++) {
             Thread.sleep(1000);
             System.out.println(i + " 发送！ ");
-            producer.send(new ProducerRecord<String, String>("test", Integer.toString(i), Integer.toString(i)));
+            producer.send(new ProducerRecord<String, String>("test", i + ",key", Integer.toString(i ++) + ",123412341234,22.7" + Long.toString(i++)));
         }
         System.out.println("发送完毕！");
         producer.close();

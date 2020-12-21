@@ -174,6 +174,14 @@ public class SourceTest_collections {
     }
 
 
+    /**
+     * <p>
+     * 接受kafka数据， addSource
+     * 发送kafka数据。 addLink
+     * </p>
+     *
+     * @throws Exception
+     */
     @Test
     public void execute_sink() throws Exception {
         Properties properties = new Properties();
@@ -189,6 +197,7 @@ public class SourceTest_collections {
         streamSource.addSink(new SinkFunction<String>() {
             @Override
             public void invoke(String value, Context context) throws Exception {
+                System.out.println(value + " 规则集 ");
                 KafkaProducer producer = new KafkaProducer<String, String>(properties);
                 ProducerRecord<String, String> record = new ProducerRecord<>("sinktest", null, null, value);
                 producer.send(record);
@@ -224,34 +233,6 @@ public class SourceTest_collections {
         ProducerRecord<String, String> record = new ProducerRecord<>("sinktest", null, null, content);
         producer.send(record);
         producer.flush();
-    }
-
-    @Test
-    public void execute_window() {
-        map.keyBy("id")
-                .timeWindow(Time.seconds(100))
-                .aggregate(new AggregateFunction<SensorReading, Object, Integer>() {
-                    @Override
-                    public Object createAccumulator() {
-                        return null;
-                    }
-
-                    @Override
-                    public Object add(SensorReading sensorReading, Object o) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getResult(Object o) {
-                        return null;
-                    }
-
-                    @Override
-                    public Object merge(Object o, Object acc1) {
-                        return null;
-                    }
-                });
-
     }
 
 }
