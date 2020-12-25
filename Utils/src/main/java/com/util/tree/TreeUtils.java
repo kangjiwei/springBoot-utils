@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Tree菜单。
+ * 实现查询子菜单
+ * @param <T>
+ */
 public class TreeUtils<T> {
 
 
