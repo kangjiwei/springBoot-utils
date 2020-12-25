@@ -72,12 +72,20 @@
 
 		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker
 		  java Template engine,
-		  Freemark Template Language --> FTL语言
-		  -->
+		  Freemark Template Language  FTL语言-->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.30</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.75</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 
 
