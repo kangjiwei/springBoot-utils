@@ -30,6 +30,7 @@
         <module>springboot-javapoet</module>
         <module>springBoot-kafka</module>
         <module>springboot-flink</module>
+        <module>springboot-beam</module>
     </modules>
 
     <!--子类可以选择型继承，且版本于此相同 -->
