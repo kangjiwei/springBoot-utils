@@ -30,7 +30,10 @@ public class HelloController {
     }
 
     /**
-     *   TXT 文件的读取
+     * TXT 文件的读取
+     * 英语必学之
+     * http请求与MultipartFile之间是通过spring完成映射的
+     *
      * @param file
      * @return
      * @throws IOException

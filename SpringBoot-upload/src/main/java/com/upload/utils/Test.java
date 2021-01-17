@@ -10,6 +10,7 @@ import org.springframework.util.ClassUtils;
 import java.lang.ref.Reference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.TreeMap;
 
 /**
  *
@@ -44,7 +45,6 @@ public class Test {
 
     @org.junit.Test
     public void code2(){
-
         try {
             Class<?> aClass = ClassUtils.forName("javax.inject.Provider", Test.class.getClassLoader());
             Method[] methods = aClass.getMethods();
@@ -71,28 +71,8 @@ public class Test {
         //Reference
     }
 
-
-    public volatile int inc = 0;
-
-    public void increase() {
-        inc++;
-    }
-
     public static void main(String[] args) {
-        final Test test = new Test();
-        for(int i=0;i<10;i++){
-            new Thread(){
-                public void run() {
-                    for(int j=0;j<1000;j++)
-                        test.increase();
-                };
-            }.start();
-        }
-
-        while(Thread.activeCount()>1)  //保证前面的线程都执行完
-            Thread.yield();
-        System.out.println(test.inc);
+        TreeMap
     }
-
 
 }

@@ -1,7 +1,7 @@
 package com.util;
 
 
-import lombok.extern.slf4j.Slf4j;
+
 
 import java.io.*;
 /**
@@ -38,7 +38,6 @@ public class Test {
      * debug
      */
     public void readFileContent() {
-        log.info("");
         String filePath = "C:\\Users\\rongrong\\Desktop\\BuilderExcel.java";
         File file = new File(filePath);
         FileReader fileReader = null;
@@ -77,6 +76,7 @@ public class Test {
     }
 
     
+
 
 
 
