@@ -5,7 +5,6 @@ import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyObject;
 import groovy.lang.GroovyShell;
 import org.codehaus.groovy.control.CompilationFailedException;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
