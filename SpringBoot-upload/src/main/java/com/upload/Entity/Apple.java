@@ -1,11 +1,12 @@
 package com.upload.Entity;
 
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
+@Data
 public class Apple {
 
-     @MyName("梦")
      private String name;
 
      public void showName(){

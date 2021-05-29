@@ -30,11 +30,25 @@
 			<artifactId>graphql-java</artifactId>
 			<version>2020-09-23T01-42-02-53999d6</version>
 		</dependency>
+		<!--
+		  graphQL可视化调试工具
+		http://localhost:8080/graphiql
+		-->
+		<dependency>
+			<groupId>com.graphql-java</groupId>
+			<artifactId>graphiql-spring-boot-starter</artifactId>
+			<version>4.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>21.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>

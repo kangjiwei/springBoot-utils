@@ -1,0 +1,6 @@
+{
+  "foo": {
+    "barKey": "barValue",
+    "bazKey": "bazValue"
+  }
+}

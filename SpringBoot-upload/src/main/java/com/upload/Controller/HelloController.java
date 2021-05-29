@@ -1,5 +1,7 @@
 package com.upload.Controller;
 
+import com.upload.Entity.Apple;
+import com.upload.Entity.Params;
 import lombok.Cleanup;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -25,7 +29,7 @@ public class HelloController {
 
 
     @RequestMapping("/nihao")
-    public  String    nihao(){
+    public String nihao() {
         return "/index";
     }
 
@@ -40,15 +44,15 @@ public class HelloController {
      */
     @RequestMapping("/upload")
     @ResponseBody
-    public void  upload(@RequestParam("file")MultipartFile  file) throws IOException {
-        String  path = "D:\\160";
-        if(file == null || file.isEmpty()){
+    public void upload(@RequestParam("file") MultipartFile file) throws IOException {
+        String path = "D:\\160";
+        if (file == null || file.isEmpty()) {
             System.out.println("文件不存在！");
         }
         String fileName = file.getOriginalFilename();
-        System.out.println(" 文件名称  "+fileName);
+        System.out.println(" 文件名称  " + fileName);
         @Cleanup InputStream inputStream = file.getInputStream();
-        @Cleanup FileOutputStream out = new FileOutputStream(path+"\\"+fileName);
+        @Cleanup FileOutputStream out = new FileOutputStream(path + "\\" + fileName);
         out.write(file.getBytes());
         out.flush();
        /* byte[] buf = new byte[1024];
@@ -60,48 +64,45 @@ public class HelloController {
 
     @RequestMapping("/ExcelUpload")
     @ResponseBody
-    public void  readExcel(){
+    public void readExcel() {
 
     }
 
 
-     @RequestMapping("/downLoadFile")
-     @ResponseBody
-     public void downLoadFile(HttpServletRequest request, HttpServletResponse  response) throws IOException {
-         String  fileName = "/templates/File/SystemController.java";
+    @RequestMapping("/downLoadFile")
+    @ResponseBody
+    public void downLoadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String fileName = "/templates/File/SystemController.java";
 
-         String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
-         System.out.println(" 护你的周全  "+path);
-         //path = "C:\\Users\\rongrong\\Desktop\\BuilderExcel.java";
+        String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+        System.out.println(" 护你的周全  " + path);
+        //path = "C:\\Users\\rongrong\\Desktop\\BuilderExcel.java";
 
-         ApplicationHome applicationHome = new ApplicationHome(getClass());
-         String path1 = applicationHome.getSource().getParentFile().toString();
-         System.out.println("与他相见"+path1);
-         String replace = path.replace("target", "File");
-         System.out.println(replace+"/snow.txt");
-         File  file = new File(path+fileName);
+        ApplicationHome applicationHome = new ApplicationHome(getClass());
+        String path1 = applicationHome.getSource().getParentFile().toString();
+        System.out.println("与他相见" + path1);
+        String replace = path.replace("target", "File");
+        System.out.println(replace + "/snow.txt");
+        File file = new File(path + fileName);
 
 
+        if (true) {
+            response.setContentType("application/force-download");
+            response.addHeader("Content-Disposition", "attachment;filename=test.txt");
 
-          if(true){
-              response.setContentType("application/force-download");
-              response.addHeader("Content-Disposition","attachment;filename=test.txt");
+            @Cleanup InputStream fileInputStream = new FileInputStream(file);
+            @Cleanup BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+            @Cleanup OutputStream outputStream = response.getOutputStream();
 
-         @Cleanup InputStream fileInputStream = new FileInputStream(file);
-         @Cleanup BufferedInputStream  bufferedInputStream = new BufferedInputStream(fileInputStream);
-         @Cleanup OutputStream outputStream = response.getOutputStream();
+            byte[] b = new byte[1024];
 
-          byte[] b = new  byte[1024];
-
-          int  len = bufferedInputStream.read(b);
-              while(len != -1){
-                  outputStream.write(b, 0 , len);
-                  len = bufferedInputStream.read(b);
-              }
-
-          }
-
-     }
+            int len = bufferedInputStream.read(b);
+            while (len != -1) {
+                outputStream.write(b, 0, len);
+                len = bufferedInputStream.read(b);
+            }
+        }
+    }
 
     private String resourceDir;
 
@@ -111,7 +112,7 @@ public class HelloController {
     public String bacthFileUpload(MultipartFile[] file) {
         StringBuffer buffer = new StringBuffer();
         for (MultipartFile multipartFile : file) {
-             fileUpload(multipartFile);
+            fileUpload(multipartFile);
         }
         String all = buffer.substring(0, buffer.length() - 1);
         return all;
@@ -120,10 +121,52 @@ public class HelloController {
     //单个文件上传
     @RequestMapping("/dc/fileUpload")
     @ResponseBody
-    public String fileUpload(MultipartFile file){
+    public String fileUpload(MultipartFile file) {
         // 获取上传文件路径
         String uploadPath = file.getOriginalFilename();
-        System.out.println("上传文件路径  "+uploadPath);
+        System.out.println("上传文件路径  " + uploadPath);
         return null;
     }
+
+
+    @GetMapping("/dc/test")
+    @ResponseBody
+    public String test(String Range, Object SecondaryRating) {
+        System.out.println(Range);
+        //获取上传文件路径
+        return null;
+    }
+
+    @PostMapping("/dc/post")
+    @ResponseBody
+    public String post(@RequestBody Apple jsonStr) {
+        System.out.println(jsonStr);
+        //获取上传文件路径
+        return jsonStr.getName();
+    }
+
+    @PostMapping("/test/addParams")
+    @ResponseBody
+    public String rollback(@RequestBody String jsonStr) {
+        System.out.println("回调函数 " + jsonStr);
+        //获取上传文件路径
+        return jsonStr;
+    }
+
+
+    /**
+     * 测试接口--新增
+     *
+     * @return
+     */
+    @PostMapping("/dc/rb")
+    @ResponseBody
+    public Object addParams(@RequestBody Params params) {
+        Map<String,Object> retMap = new HashMap<>();
+        retMap.put("retCode", 200);
+        retMap.put("message", "操纵成功");
+        retMap.put("contents", null);
+        return retMap;
+    }
+
 }

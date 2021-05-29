@@ -1,11 +1,14 @@
 package com.util;
 
 
-
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.saasquatch.jsonschemainferrer.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.Arrays;
+
 /**
  * Created by rongrong on 2019/12/17.
  */
@@ -13,23 +16,23 @@ import java.io.*;
 public class Test {
 
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final JsonSchemaInferrer inferrer = JsonSchemaInferrer.newBuilder()
+            .setSpecVersion(SpecVersion.DRAFT_06)
+            // Requires commons-validator
+            .addFormatInferrers(FormatInferrers.email(), FormatInferrers.ip())
+            .setAdditionalPropertiesPolicy(AdditionalPropertiesPolicies.notAllowed())
+            .setRequiredPolicy(RequiredPolicies.nonNullCommonFields())
+            .addEnumExtractors(EnumExtractors.validEnum(java.time.Month.class),
+                    EnumExtractors.validEnum(java.time.DayOfWeek.class))
+            .build();
+
     public static void main(String[] args) {
-        log.info("数据增加成功！");
-        log.error("错误信息！");
 
-  /*      User user =  new User("最爱的你","美丽的故事","大宗师");
-        ObjToMap  objToMap = new ObjToMap();
-        Map<String,ObjToMap> map = objToMap.toMap(user);
-        System.out.println(map.toString());*/
 
-   /*     BuilderExcel  excel = new BuilderExcel();
-        excel.operation();*/
-        /*Test test = new Test();
-        test.readFileContent();*/
-        //三目运算法，如果条件成立事条件1 ，否则是条件2
-        System.out.println(true ? "hao" : "no");
 
     }
+
 
     /**
      * 日志，就是记录日志不同的日志
@@ -76,10 +79,4 @@ public class Test {
         }
         return null;
     }
-
-    
-
-
-
-
 }

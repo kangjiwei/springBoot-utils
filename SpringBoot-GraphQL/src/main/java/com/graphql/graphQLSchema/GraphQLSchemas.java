@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 /**
- *  @Author kangjiwei
- *  @Date 2019/12/10
- *  生成schema
+ * @Author kangjiwei
+ * @Date 2019/12/10
+ * 生成schema
  */
 @Component
 public class GraphQLSchemas {
 
     @Autowired
-    GraphQLDataFetchers  graphQLDataFetchers;
+    GraphQLDataFetchers graphQLDataFetchers;
 
     // 创建 schema
     public GraphQLSchema buildSchema(String sdl) {
@@ -30,10 +30,10 @@ public class GraphQLSchemas {
         return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
     }
 
-    private RuntimeWiring buildWiring(){
+    private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
-                .type(newTypeWiring("Query").dataFetcher("bookById",graphQLDataFetchers.getBookByIdDataFetcher()))
-                .type(newTypeWiring("Query").dataFetcher("author",graphQLDataFetchers.getAuthorDataFetcher()))
+                .type(newTypeWiring("Query").dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
+                .type(newTypeWiring("Query").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
                 .build();
     }
 
