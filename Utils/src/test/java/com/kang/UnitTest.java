@@ -5,11 +5,15 @@ import com.alibaba.fastjson.JSONPath;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.util.UtilsApplication;
 import lombok.Cleanup;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,6 +22,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = UtilsApplication.class)
 public class UnitTest {
 
     public static int PRETTY_PRINT_INDENT_FACTOR = 4;
@@ -287,4 +293,44 @@ public class UnitTest {
         }
     }
 
+
+    public static void main(String[] args) throws IOException {
+      /*  String jsonStr = "[\n" +
+                "    {\n" +
+                "        \"norm\":[\n" +
+                "            {\n" +
+                "                \"sources\":[\n" +
+                "                    {\n" +
+                "                        \"version\":\"V1.0.0\",\n" +
+                "                        \"__typename\":\"KeyIndexSource\",\n" +
+                "                        \"sourceName\":\"2代征信数据源\",\n" +
+                "                        \"sourceUuid\":\"3dcae194-3cc6-4f30-9f15-9d998a919ba2\",\n" +
+                "                        \"sourceSchema\":[\n" +
+                "                            {\n" +
+                "                                \"type\":\"2\",\n" +
+                "                                \"mapping\":\"ORDERNO\",\n" +
+                "                                \"paramName\":\"order_no\",\n" +
+                "                                \"__typename\":\"SourceSchema\"\n" +
+                "                            }\n" +
+                "                        ]\n" +
+                "                    }\n" +
+                "                ],\n" +
+                "                \"indexName\":\"到期一次性还本信用贷款机构数_未结清\",\n" +
+                "                \"indexUuid\":\"4fde269cec024ceea10c4e430e22ce49\",\n" +
+                "                \"__typename\":\"KeyIndex\",\n" +
+                "                \"indexVersion\":\"V1.0.0\"\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"nameCn\":\"订单1\",\n" +
+                "        \"nameEn\":\"ORDERNO\",\n" +
+                "        \"__typename\":\"KeyGroup\"\n" +
+                "    }\n" +
+                "]";
+        Object read = JsonPath.parse(jsonStr).read("$.*.[?(@.nameEn == 'ORDERNO')].norm.*.[?(@.indexUuid == '4fde269cec024ceea10c4e430e22ce49')].sources.*.[?(@.sourceUuid == '3dcae194-3cc6-4f30-9f15-9d998a919ba2')]sourceSchema");
+        System.out.println(read);
+        List<Map<String, Object>> read1 = JsonPath.parse(read).read("$.*.norm[0].sources[0].sourceSchema");
+        for (Map<String, Object> map : read1) {
+            System.out.println(map);
+        }*/
+    }
 }

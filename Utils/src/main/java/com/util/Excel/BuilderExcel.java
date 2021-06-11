@@ -21,9 +21,6 @@ import java.util.Map;
  */
 public class BuilderExcel {
 
-
-
-
     public void   operation(){
         String[] titles = {"姓名","性别","年龄"};
         List<Map<String,Object>> list = new ArrayList<>();
