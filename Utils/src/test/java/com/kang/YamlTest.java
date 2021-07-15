@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,7 @@ public class YamlTest {
 
     /**
      * yaml.dumpAsMap 会将map中的最后一个对象不按照
+     *
      * @throws IOException
      */
     @Test
@@ -54,4 +55,5 @@ public class YamlTest {
         fileWriter.flush();
         System.out.println(dumpMapStr);
     }
+
 }

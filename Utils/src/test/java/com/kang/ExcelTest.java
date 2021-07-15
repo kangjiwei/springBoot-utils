@@ -1,6 +1,6 @@
 package com.kang;
 
-import com.util.Excel.ExcelUtil;
+import com.util.Excel.v1.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

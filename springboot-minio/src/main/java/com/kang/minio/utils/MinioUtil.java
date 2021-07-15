@@ -1,12 +1,11 @@
 package com.kang.minio.utils;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import io.minio.*;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.security.InvalidKeyException;
@@ -17,12 +16,30 @@ import java.util.Iterator;
  * @Author kangjiwei
  * @Date 2020/7/31
  */
-@Component
+
 public class MinioUtil {
 
-    private String bucketName = "zlr-bucket";
+    private String endPoint;
+    private String accessKey;
+    private String secretKey;
+    private String bucketName;
 
-    public MinioClient minioClient = new MinioClient("http://192.168.20.10:9000", "admin", "admin123");
+    /**
+     * @param endPoint   http://192.168.20.10:9000
+     * @param accessKey  admin
+     * @param secretKey  admin123
+     * @param bucketName zlr-bucket
+     */
+    public MinioClient minioClient;
+
+    public MinioUtil(String endPoint, String accessKey, String secretKey, String bucketName) {
+        this.endPoint = endPoint;
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+        this.bucketName = bucketName;
+        minioClient = new MinioClient(endPoint, accessKey, secretKey);
+    }
+
 
     /**
      * 上传文件
@@ -31,7 +48,6 @@ public class MinioUtil {
      * @param filePath   上传的本地文件路径
      */
     public String uploadFile(String objectName, String filePath) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
-        // MinioClient client = new MinioClient("http://192.168.128.128:9000", "minio", "minio123");
         try {
             // 若不存在bucket，则新建
             boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());

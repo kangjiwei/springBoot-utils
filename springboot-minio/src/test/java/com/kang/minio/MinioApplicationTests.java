@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 //@SpringBootTes
 public class MinioApplicationTests {
 
-    private MinioUtil minioUtil = new MinioUtil();
+    private MinioUtil minioUtil = new MinioUtil("http://192.168.128.128:9000", "minio", "minio123","");
 
     @Test
     public void upload() {
